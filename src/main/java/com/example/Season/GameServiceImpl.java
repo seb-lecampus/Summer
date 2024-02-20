@@ -3,9 +3,11 @@ package com.example.Season;
 import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.InvalidPositionException;
+import fr.le_campus_numerique.square_games.engine.Token;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -34,6 +36,12 @@ public class GameServiceImpl implements GameService {
     public GameDTO getGameDTOById(int gameId) {
         var game = games.get(gameId);
         return new GameDTO(gameId, game.getFactoryId(), game.getPlayerIds().size(), game.getBoardSize(), game);
+    }
+
+    @Override
+    public List<List<Object>> getPossibleMove(int gameId) {
+        Game g = games.get(gameId);
+        return Stream.concat(g.getRemovedTokens().stream(), Stream.concat(g.getRemainingTokens().stream(), g.getBoard().values().stream())).filter(Token::canMove).map(e -> List.of(e.getName(), e.getAllowedMoves())).toList();
     }
 
     @Override

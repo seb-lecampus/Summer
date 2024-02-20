@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 @SpringBootApplication
@@ -37,10 +38,11 @@ public class SummerApplication {
 		}
 
 		@GetMapping("/games/{gameId}")
-		public GameDTO getGameById(@PathVariable int gameId) {
+		public List<List<Object>> getGameById(@PathVariable int gameId) {
 			// TODO - actually get and return game with id 'gameId'
 			System.out.println("GET /games/"+gameId);
-			return game.getGameDTOById(gameId);
+			//return game.getGameDTOById(gameId);
+			return game.getPossibleMove(gameId);
 		}
 
 		@PutMapping("/games/{gameId}")
