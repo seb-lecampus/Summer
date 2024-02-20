@@ -1,9 +1,6 @@
 package com.example.Season;
 
-import fr.le_campus_numerique.square_games.engine.Game;
-
 import java.util.Collection;
-import java.util.Map;
 
 public interface GameService {
     int createGame(GameCreationParams params);
@@ -12,5 +9,7 @@ public interface GameService {
 
     void deleteGame(int id);
 
-    GameDTO getGameById(int gameId);
+    GameDTO getGameDTOById(int gameId);
+
+    void playGame(int id, GameMoveParam move);
 }

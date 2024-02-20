@@ -1,12 +1,11 @@
 package com.example.Season;
 
-import com.sun.source.tree.Tree;
+import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
+import fr.le_campus_numerique.square_games.engine.InvalidPositionException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -32,8 +31,23 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public GameDTO getGameById(int gameId) {
+    public GameDTO getGameDTOById(int gameId) {
         var game = games.get(gameId);
-        return new GameDTO(gameId, game.getFactoryId(), game.getPlayerIds().size(), game.getBoardSize());
+        return new GameDTO(gameId, game.getFactoryId(), game.getPlayerIds().size(), game.getBoardSize(), game);
+    }
+
+    @Override
+    public void playGame(int id, GameMoveParam move) {
+        Game game = games.get(id);
+        if(game.getCurrentPlayerId().equals(UUID.fromString(move.PlayerId()))){
+            try {
+                game.getRemainingTokens().iterator().next().moveTo(new CellPosition(move.x(), move.y()));
+                System.out.println("moved");
+            } catch (InvalidPositionException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            System.out.println("Bad player");
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.Season;
 
-import fr.le_campus_numerique.square_games.engine.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Random;
 
 @SpringBootApplication
@@ -41,12 +39,23 @@ public class SummerApplication {
 		@GetMapping("/games/{gameId}")
 		public GameDTO getGameById(@PathVariable int gameId) {
 			// TODO - actually get and return game with id 'gameId'
-			return game.getGameById(gameId);
+			System.out.println("GET /games/"+gameId);
+			return game.getGameDTOById(gameId);
+		}
+
+		@PutMapping("/games/{gameId}")
+		public void moveToken(@PathVariable int gameId, @RequestBody GameMoveParam body) {
+			// TODO - actually get and return game with id 'gameId'
+			System.out.println("PUT /games/"+gameId);
+			System.out.println(body);
+			game.playGame(gameId, body);
 		}
 
 		@PostMapping("/games")
 		public int createGame(@RequestBody GameCreationParams params) {
 			// TODO - actually create a new game
+			System.out.println("POST /games/");
+			System.out.println(params);
 			return game.createGame(params);
 		}
 
