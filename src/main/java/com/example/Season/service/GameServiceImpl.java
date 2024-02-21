@@ -1,5 +1,9 @@
-package com.example.Season;
+package com.example.Season.service;
 
+import com.example.Season.dto.TokensDTO;
+import com.example.Season.rest_param.GameCreationParams;
+import com.example.Season.dto.GameDTO;
+import com.example.Season.rest_param.GameMoveParam;
 import com.example.Season.domain_object.GameFactorys;
 import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
@@ -9,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -39,10 +45,17 @@ public class GameServiceImpl implements GameService {
         return new GameDTO(gameId, game.getFactoryId(), game.getPlayerIds().size(), game.getBoardSize(), game);
     }
 
+    public List<TokensDTO> getPossibleMove(Game game) {
+        return Stream.concat(game.getRemovedTokens().stream(), Stream.concat(game.getRemainingTokens().stream(), game.getBoard().values().stream())).filter(Token::canMove).map(e -> new TokensDTO(e.getName(), e.getPosition(), e.getAllowedMoves())).toList();
+    }
+
+    public List<Token> getMovableToken(Game game) {
+        return Stream.concat(game.getRemovedTokens().stream(), Stream.concat(game.getRemainingTokens().stream(), game.getBoard().values().stream())).filter(Token::canMove).toList();
+    }
+
     @Override
-    public List<List<Object>> getPossibleMove(int gameId) {
-        Game g = games.get(gameId);
-        return Stream.concat(g.getRemovedTokens().stream(), Stream.concat(g.getRemainingTokens().stream(), g.getBoard().values().stream())).filter(Token::canMove).map(e -> List.of(e.getName(), e.getAllowedMoves())).toList();
+    public List<TokensDTO> getPossibleMove(int gameId) {
+        return getPossibleMove(games.get(gameId));
     }
 
     @Override
@@ -50,7 +63,11 @@ public class GameServiceImpl implements GameService {
         Game game = games.get(id);
         if(game.getCurrentPlayerId().equals(UUID.fromString(move.PlayerId()))){
             try {
-                game.getRemainingTokens().iterator().next().moveTo(new CellPosition(move.x(), move.y()));
+                var moves = getMovableToken(game);
+                var want = moves.stream().filter(tok -> (tok.getPosition() ==  move.from())).toList().getFirst();
+                /*if(want == null)
+                    want = get*/
+                want.moveTo(move.to());
                 System.out.println("moved");
             } catch (InvalidPositionException e) {
                 System.out.println(e.getMessage());

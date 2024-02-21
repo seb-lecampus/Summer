@@ -2,6 +2,7 @@ package com.example.Season;
 
 import com.example.Season.domain_object.GameCatalog;
 import com.example.Season.dto.GameDTO;
+import com.example.Season.dto.TokensDTO;
 import com.example.Season.rest_param.GameCreationParams;
 import com.example.Season.rest_param.GameMoveParam;
 import com.example.Season.service.GameService;
@@ -44,9 +45,16 @@ public class SummerApplication {
 		}
 
 		@GetMapping("/games/{gameId}")
-		public List<List<Object>> getGameById(@PathVariable int gameId) {
+		public GameDTO getGameById(@PathVariable int gameId) {
 			// TODO - actually get and return game with id 'gameId'
 			System.out.println("GET /games/"+gameId);
+			return game.getGameDTOById(gameId);
+		}
+
+		@GetMapping("/games/{gameId}/moves")
+		public List<TokensDTO> getMovesByGame(@PathVariable int gameId) {
+			// TODO - actually get and return game with id 'gameId'
+			System.out.println("GET /games/"+gameId+"/moves");
 			//return game.getGameDTOById(gameId);
 			return game.getPossibleMove(gameId);
 		}
