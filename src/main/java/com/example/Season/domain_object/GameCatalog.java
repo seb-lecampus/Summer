@@ -1,4 +1,4 @@
-package com.example.Season;
+package com.example.Season.domain_object;
 
 import java.util.Collection;
 

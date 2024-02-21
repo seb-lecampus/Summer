@@ -1,4 +1,4 @@
-package com.example.Season;
+package com.example.Season.dto;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 

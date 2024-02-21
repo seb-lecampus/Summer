@@ -1,4 +1,4 @@
-package com.example.Season;
+package com.example.Season.domain_object;
 
 import fr.le_campus_numerique.square_games.engine.GameFactory;
 import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
@@ -6,7 +6,6 @@ import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
 import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public enum GameFactorys {
     TICTACTOE(new TicTacToeGameFactory()),

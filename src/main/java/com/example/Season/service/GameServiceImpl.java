@@ -1,5 +1,6 @@
 package com.example.Season;
 
+import com.example.Season.domain_object.GameFactorys;
 import fr.le_campus_numerique.square_games.engine.CellPosition;
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.InvalidPositionException;

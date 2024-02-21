@@ -1,5 +1,11 @@
 package com.example.Season;
 
+import com.example.Season.domain_object.GameCatalog;
+import com.example.Season.dto.GameDTO;
+import com.example.Season.rest_param.GameCreationParams;
+import com.example.Season.rest_param.GameMoveParam;
+import com.example.Season.service.GameService;
+import com.example.Season.service.HeartbeatSensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -67,10 +73,6 @@ public class SummerApplication {
 		}
 	}
 
-	public interface HeartbeatSensor {
-		int getInt();
-	}
-
 	@RestController
 	public class HeartbeatController {
 		Random rng = new Random();
@@ -82,14 +84,4 @@ public class SummerApplication {
 			return heartbeatSensor.getInt();
 		}
 	}
-
-	@Service
-	public class RandomHeartbeat implements HeartbeatSensor {
-		Random rng = new Random();
-		@Override
-		public int getInt() {
-			return rng.nextInt(230-40)+40;
-		}
-	}
-
 }
