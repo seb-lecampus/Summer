@@ -1,6 +1,7 @@
 package com.example.Season;
 
 import com.example.Season.domain_object.GameCatalog;
+import com.example.Season.domain_object.GamePlugin;
 import com.example.Season.dto.GameDTO;
 import com.example.Season.dto.TokensDTO;
 import com.example.Season.rest_param.GameCreationParams;
@@ -33,8 +34,12 @@ public class SummerApplication {
 		@Autowired
 		GameCatalog cat;
 
+		@Autowired
+		GamePlugin g;
+
 		@GetMapping("/cat")
 		public Collection<String> getCat(){
+			System.out.println(g.getName());
 			return cat.getGameIdentifiers();
 		}
 
