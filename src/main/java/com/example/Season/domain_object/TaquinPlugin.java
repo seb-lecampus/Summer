@@ -2,29 +2,29 @@ package com.example.Season.domain_object;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.GameFactory;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
+import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
+import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 
 @Component
-public class TicTacToePlugin implements GamePlugin {
-    GameFactory factory = new TicTacToeGameFactory();
-    @Autowired MessageSource msg;
-    @Value("${TTT.default.player_count}")
+public class TaquinPlugin implements GamePlugin {
+    GameFactory factory = new TaquinGameFactory();
+    @Autowired
+    ResourceBundleMessageSource msg;
+    @Value("${TQ.default.player_count}")
     private int default_players_count;
 
-    @Value("${TTT.default.size}")
+    @Value("${TQ.default.size}")
     private int default_board_size;
 
     @Override
     public String getName(Locale locale) {
-        return msg.getMessage("TTT", null, locale);
+        return msg.getMessage("TQ", null, locale);
     }
 
     @Override
@@ -51,6 +51,4 @@ public class TicTacToePlugin implements GamePlugin {
     public int getDefaultBoardSize() {
         return default_board_size;
     }
-
 }
-

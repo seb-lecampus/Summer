@@ -1,5 +1,6 @@
 package com.example.Season.service;
 
+import com.example.Season.domain_object.GamePlugin;
 import com.example.Season.dto.TokensDTO;
 import com.example.Season.rest_param.GameCreationParams;
 import com.example.Season.dto.GameDTO;
@@ -26,6 +27,20 @@ public class GameServiceImpl implements GameService {
     public int createGame(GameCreationParams params) {
         int id = ++GameServiceImpl.id;
         games.put(id, GameFactorys.getById(params.factory()).factory.createGame(params.players(), params.size()));
+        return id;
+    }
+
+    @Override
+    public int createGameWithPlugin(GamePlugin game) {
+        int id = ++GameServiceImpl.id;
+        games.put(id, game.createGame());
+        return id;
+    }
+
+    @Override
+    public int createGameWithPlugin(GamePlugin game, int player_count, int board_size) {
+        int id = ++GameServiceImpl.id;
+        games.put(id, game.CreateGame(player_count, board_size));
         return id;
     }
 
