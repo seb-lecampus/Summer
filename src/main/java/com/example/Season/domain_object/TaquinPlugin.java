@@ -29,7 +29,7 @@ public class TaquinPlugin implements GamePlugin {
 
     @Override
     public String getId() {
-        return factory.getGameId();
+        return factory.getGameFactoryId();
     }
 
     @Override

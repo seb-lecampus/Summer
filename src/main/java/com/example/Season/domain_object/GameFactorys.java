@@ -22,14 +22,14 @@ public enum GameFactorys {
     static public ArrayList<String> getIdentifiers(){
         ArrayList<String> identifiers = new ArrayList<>(GameFactorys.length);
         for(GameFactorys e : GameFactorys.values()){
-            identifiers.add(e.factory.getGameId());
+            identifiers.add(e.factory.getGameFactoryId());
         }
         return identifiers;
     }
 
     static public GameFactorys getById(String id){
         for(GameFactorys e : GameFactorys.values()){
-           if(e.factory.getGameId().equals(id))
+           if(e.factory.getGameFactoryId().equals(id))
                return e;
         }
         return null;

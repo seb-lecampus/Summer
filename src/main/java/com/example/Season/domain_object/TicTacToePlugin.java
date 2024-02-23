@@ -29,7 +29,7 @@ public class TicTacToePlugin implements GamePlugin {
 
     @Override
     public String getId() {
-        return factory.getGameId();
+        return factory.getGameFactoryId();
     }
 
     @Override
