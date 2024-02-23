@@ -5,8 +5,8 @@ import fr.le_campus_numerique.square_games.engine.Game;
 import java.util.Locale;
 
 public interface GamePlugin {
-    public String getName(Locale locale);
-    public String getId();
+    String getName(Locale locale);
+    String getId();
     Game createGame();
     Game CreateGame(int playerCount, int boardSize);
     int getDefaultPlayerCount();

@@ -18,13 +18,13 @@ import java.util.Locale;
 @RestController
 public class GameController{
     @Autowired
-    GameService game;
+    private GameService game;
 
     @Autowired
-    GameCatalog cat;
+    private GameCatalog cat;
 
     @Autowired
-    List<GamePlugin> g;
+    private List<GamePlugin> g;
 
     @GetMapping("/cat")
     public List<List<String>> getCat(@RequestHeader(HttpHeaders.ACCEPT_LANGUAGE) Locale locale){

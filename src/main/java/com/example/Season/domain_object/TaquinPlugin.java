@@ -13,9 +13,9 @@ import java.util.Locale;
 
 @Component
 public class TaquinPlugin implements GamePlugin {
-    GameFactory factory = new TaquinGameFactory();
+    private GameFactory factory = new TaquinGameFactory();
     @Autowired
-    ResourceBundleMessageSource msg;
+    private ResourceBundleMessageSource msg;
     @Value("${TQ.default.player_count}")
     private int default_players_count;
 

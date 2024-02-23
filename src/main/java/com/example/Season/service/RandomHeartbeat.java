@@ -6,7 +6,7 @@ import java.util.Random;
 
 @Service
 public class RandomHeartbeat implements HeartbeatSensor {
-    Random rng = new Random();
+    private Random rng = new Random();
 
     @Override
     public int getInt() {

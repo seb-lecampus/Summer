@@ -12,9 +12,9 @@ import java.util.Locale;
 
 @Component
 public class P4Plugin implements GamePlugin {
-    GameFactory factory = new ConnectFourGameFactory();
+    private GameFactory factory = new ConnectFourGameFactory();
     @Autowired
-    ResourceBundleMessageSource msg;
+    private ResourceBundleMessageSource msg;
     @Value("${P4.default.player_count}")
     private int default_players_count;
 

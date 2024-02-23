@@ -20,8 +20,8 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class GameServiceImpl implements GameService {
 
-    static int id = 0;
-    Map<Integer, Game> games = new TreeMap<>();
+    static private int id = 0;
+    private Map<Integer, Game> games = new TreeMap<>();
 
     @Override
     public int createGame(GameCreationParams params) {

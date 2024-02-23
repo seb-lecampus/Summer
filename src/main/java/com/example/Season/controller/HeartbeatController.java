@@ -9,9 +9,9 @@ import java.util.Random;
 
 @RestController
 public class HeartbeatController {
-    Random rng = new Random();
+    private Random rng = new Random();
     @Autowired
-    HeartbeatSensor heartbeatSensor;
+    private HeartbeatSensor heartbeatSensor;
 
     @GetMapping("/heartbeat")
     public int getHeartbeat(){

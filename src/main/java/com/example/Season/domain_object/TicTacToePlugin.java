@@ -14,8 +14,8 @@ import java.util.Locale;
 
 @Component
 public class TicTacToePlugin implements GamePlugin {
-    GameFactory factory = new TicTacToeGameFactory();
-    @Autowired MessageSource msg;
+    private GameFactory factory = new TicTacToeGameFactory();
+    private @Autowired MessageSource msg;
     @Value("${TTT.default.player_count}")
     private int default_players_count;
 
