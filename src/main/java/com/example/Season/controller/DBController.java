@@ -5,10 +5,7 @@ import com.example.Season.dto.UserDTO;
 import com.example.Season.rest_param.UserParam;
 import com.example.Season.dao.UserFakeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -24,5 +21,15 @@ public class DBController {
     @PostMapping("/User")
     public void insertUser(@RequestBody UserParam user){
         db.addUser(new UserDTO(user.firstName(), user.lastName()));
+    }
+
+    @PutMapping("/User/{id}")
+    public void updateUser(@PathVariable int id, @RequestBody UserParam user){
+        db.updateUser(id, new UserDTO(user.firstName(), user.lastName()));
+    }
+
+    @DeleteMapping("/User/{id}")
+    public void deleteUser(@PathVariable int id){
+        db.deleteUser(id);
     }
 }

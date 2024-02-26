@@ -37,31 +37,53 @@ public class UserMySQLDAO implements UserDAO {
 
     @Override
     public Collection<UserDTO> getAllUsers() {
+        List<UserDTO> result = null;
         try {
             PreparedStatement ps = getCon().prepareStatement("SELECT * FROM user");
             ResultSet rs = ps.executeQuery();
-            List<UserDTO> l = new ArrayList<>(rs.getFetchSize());
+            result = new ArrayList<>(rs.getFetchSize());
             while (rs.next()) {
-                l.add(new UserDTO(rs.getString("firstName"), rs.getString("lastName")));
+                result.add(new UserDTO(rs.getString("firstName"), rs.getString("lastName")));
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        return null;
+        return result;
     }
 
     @Override
     public void addUser(UserDTO user) {
-        //getCon().p
+        try {
+            PreparedStatement ps = getCon().prepareStatement("INSERT INTO user(firstName, lastName) VALUES(?, ?)");
+            ps.setString(1, user.firstName());
+            ps.setString(2, user.lastName());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public void updateUser(int id, UserDTO user) {
-
+        try {
+            PreparedStatement ps = getCon().prepareStatement("UPDATE user SET firstName=?, lastName=? WHERE id=?");
+            ps.setString(1, user.firstName());
+            ps.setString(2, user.lastName());
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
     public void deleteUser(int id) {
-
+        try {
+            PreparedStatement ps = getCon().prepareStatement("DELETE FROM user WHERE id=?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
