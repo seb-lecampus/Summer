@@ -32,6 +32,15 @@ public class UserMySQLDAO implements UserDAO {
 
     @Override
     public UserDTO getUserById(int id) {
+        try {
+            PreparedStatement ps = getCon().prepareStatement("SELECT * FROM user WHERE id=?");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                return new UserDTO(rs.getString("firstName"), rs.getString("lastName"));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
         return null;
     }
 

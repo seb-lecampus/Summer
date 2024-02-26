@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @RestController
 public class DBController {
-    @Autowired private UserFakeDAO db;
+    @Autowired private UserMySQLDAO db;
     @GetMapping("/User")
     public Collection<UserDTO> getAllUsers() {
         return db.getAllUsers();
@@ -21,6 +21,11 @@ public class DBController {
     @PostMapping("/User")
     public void insertUser(@RequestBody UserParam user){
         db.addUser(new UserDTO(user.firstName(), user.lastName()));
+    }
+
+    @GetMapping("/User/{id}")
+    public UserDTO updateUser(@PathVariable int id){
+        return db.getUserById(id);
     }
 
     @PutMapping("/User/{id}")
