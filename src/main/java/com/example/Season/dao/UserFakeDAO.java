@@ -38,6 +38,6 @@ public class UserFakeDAO implements UserDAO {
 
     @Override
     public void deleteUser(int id) {
-
+        instance.delete(id);
     }
 }
