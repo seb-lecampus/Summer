@@ -1,15 +1,19 @@
 package com.example.Season;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "user")
+@Table(name = "USER2")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
+    @Column(name = "FIRSTNAME", nullable = false)
     private String firstName;
 
+    @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
     public UserEntity() {
