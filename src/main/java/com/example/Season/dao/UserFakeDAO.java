@@ -1,13 +1,15 @@
 package com.example.Season.dao;
 
+import com.example.Season.UserRepository;
 import com.example.Season.dto.UserDTO;
 import com.example.Season.fakedb.FakeDB;
 import com.example.Season.fakedb.User;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service
+@Repository
 public class UserFakeDAO implements UserDAO {
 
     private FakeDB instance = new FakeDB(); // TODO singleton

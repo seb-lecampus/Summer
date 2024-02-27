@@ -1,6 +1,7 @@
 package com.example.Season.dao;
 
 import com.example.Season.dto.UserDTO;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -13,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@Service
+@Repository
 public class UserMySQLDAO implements UserDAO {
     Connection conn;
 

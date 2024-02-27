@@ -1,9 +1,10 @@
 package com.example.Season;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.context.annotation.Profile;
 
 @Entity
-@Table(name = "USER2")
+@Table(name = "USER3")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
