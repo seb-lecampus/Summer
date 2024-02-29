@@ -13,19 +13,18 @@ import java.util.Collection;
 public class User2 implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "FIRSTNAME", nullable = false)
-    private String firstName;
-
-    @Column(name = "LASTNAME", nullable = false)
-    private String lastName;
+    private String userName;
     private String password;
     private Boolean isEnabled;
     private Boolean iscredentialsExpired;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;
+
+    public User2() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -35,69 +34,9 @@ public class User2 implements UserDetails {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
-    }
-
-    public Boolean getIscredentialsExpired() {
-        return iscredentialsExpired;
-    }
-
-    public void setIscredentialsExpired(Boolean iscredentialsExpired) {
-        this.iscredentialsExpired = iscredentialsExpired;
-    }
-
-    public Boolean getAccountLocked() {
-        return isAccountLocked;
-    }
-
-    public void setAccountLocked(Boolean accountLocked) {
-        isAccountLocked = accountLocked;
-    }
-
-    public Boolean getAccountExpired() {
-        return isAccountExpired;
-    }
-
-    public void setAccountExpired(Boolean accountExpired) {
-        isAccountExpired = accountExpired;
-    }
-
-    public User2(String s, String s1, String password) {
-        firstName=s;
-        lastName=s1;
+    public User2(String s, String password) {
+        userName=s;
         this.password=password;
-        isEnabled = true;
-        iscredentialsExpired = false;
-        isAccountExpired = false;
-        isAccountLocked = false;
-    }
-
-    public User2() {
         isEnabled = true;
         iscredentialsExpired = false;
         isAccountExpired = false;
@@ -116,7 +55,7 @@ public class User2 implements UserDetails {
 
     @Override
     public String getUsername() {
-        return firstName;
+        return userName;
     }
 
     @Override
