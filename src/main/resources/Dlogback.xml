@@ -1,0 +1,39 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--<Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n)
+            </Pattern>-->
+            <Pattern>
+                %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+    <appender name="CONSOLEB" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %cyan(%d{HH:mm:ss.SSS} [%t]) %highlight(%-5level) %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>My.log</file>
+        <append>false</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="com.example.Season" level="debug" additivity="false">
+        <appender-ref ref="CONSOLEB"/>
+    </logger>
+
+    <root level="info"> // Niveau de journalisation par défaut
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
