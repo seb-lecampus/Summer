@@ -1,5 +1,5 @@
-package com.example.Season;
-import com.example.Season.dto.UserDTO;
+package com.example.Season.repository;
+import com.example.Season.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

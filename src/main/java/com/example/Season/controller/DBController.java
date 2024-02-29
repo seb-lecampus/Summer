@@ -1,18 +1,14 @@
 package com.example.Season.controller;
 
-import com.example.Season.*;
+import com.example.Season.entity.UserEntity;
+import com.example.Season.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.example.Season.dao.UserMySQLDAO;
 import com.example.Season.dto.UserDTO;
 import com.example.Season.rest_param.UserParam;
-import com.example.Season.dao.UserFakeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.stream.StreamSupport;
 

@@ -1,7 +1,7 @@
 package com.example.Season.controller;
 
-import com.example.Season.User2;
-import com.example.Season.User2Repository;
+import com.example.Season.entity.User2;
+import com.example.Season.repository.User2Repository;
 import com.example.Season.rest_param.UserParam2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

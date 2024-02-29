@@ -1,4 +1,4 @@
-package com.example.Season;
+package com.example.Season.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Profile;

@@ -1,4 +1,4 @@
-package com.example.Season;
+package com.example.Season.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
