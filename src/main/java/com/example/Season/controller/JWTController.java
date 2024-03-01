@@ -25,4 +25,11 @@ public class JWTController {
     public User2 userbyname(@PathVariable String username){
         return userRepository.findByUserName(username);
     }
+
+    @GetMapping("/test")
+    public User2 testouille(){
+        return null;
+    }
+
+
 }

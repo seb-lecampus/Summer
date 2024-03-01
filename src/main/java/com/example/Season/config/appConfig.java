@@ -1,5 +1,6 @@
 package com.example.Season.config;
 
+import com.example.Season.JwtTokenAuthenticationFilter;
 import jakarta.servlet.Filter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,26 +52,26 @@ public class appConfig {
         }
     }
 
-    @Bean
+    /*@Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
-    }
+    }*/
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());                                                              // disable csrf security
         http.sessionManagement(lol -> lol.sessionCreationPolicy(SessionCreationPolicy.STATELESS));    // enable stateless
         http.userDetailsService(userDetailsService)
-                .authenticationManager(authenticationConfiguration.getAuthenticationManager());
-        http.exceptionHandling(e -> e.accessDeniedHandler(new AccessDeniedHandler() {
+                .authenticationManager(authenticationConfiguration.getAuthenticationManager()); // TODO Useless ?
+        /*http.exceptionHandling(e -> e.accessDeniedHandler(new AccessDeniedHandler() {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
             }
-        }));
+        }));*/
 
         //http.authenticationProvider(authProvider).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(request ->
@@ -78,6 +79,7 @@ public class appConfig {
                         .requestMatchers("jwt/**").permitAll()
                         //.requestMatchers("/api/v1/admin/resource").hasRole("ADMIN") replaced with annotation in AuthorizationController   
                         .anyRequest().authenticated());
+        http.addFilterBefore(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

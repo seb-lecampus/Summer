@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @RestController
 public class AuthenticationController {
     @Autowired
-    AuthenticationConfiguration authenticationConfiguration;
+    AuthenticationManager authenticationManager;
 
     @PostMapping("api/public/login")
     public ResponseEntity<String> login(@RequestBody AuthenticationParams authenticationParams){
@@ -28,7 +29,7 @@ public class AuthenticationController {
                 UsernamePasswordAuthenticationToken.unauthenticated(authenticationParams.username(), authenticationParams.password());
 
             Authentication authenticationResponse =
-                    authenticationConfiguration.getAuthenticationManager().authenticate(authenticationRequest);
+                    authenticationManager.authenticate(authenticationRequest);
 
             if(authenticationResponse.isAuthenticated()) {
                 var c = Calendar.getInstance();
@@ -43,7 +44,7 @@ public class AuthenticationController {
                         .setExpiration(c.getTime())
                         .compact();
                 var h = new HttpHeaders();
-                        h.set(HttpHeaders.AUTHORIZATION, jwtToken);
+                        h.set(HttpHeaders.AUTHORIZATION, "Bearer "+jwtToken);
                 return ResponseEntity.ok()
                         .headers(h)
                         .body("");
