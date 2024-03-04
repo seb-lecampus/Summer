@@ -18,7 +18,9 @@ import java.util.List;
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("CUSTOM FILTER START");
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        System.out.println(authHeader);
         if(authHeader != null) {
             String[] authorization = authHeader.split("([Bb]earer) ?(.*)");
             System.out.println(authorization);
@@ -37,7 +39,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.setContext(context);
         }
         System.out.println("CUSTOM FILTER END");
-        System.out.println(authHeader);
         filterChain.doFilter(request, response);
     }
 }
