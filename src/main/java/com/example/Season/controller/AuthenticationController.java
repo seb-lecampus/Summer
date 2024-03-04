@@ -1,6 +1,8 @@
 package com.example.Season.controller;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +35,18 @@ public class AuthenticationController {
 
             if(authenticationResponse.isAuthenticated()) {
                 var c = Calendar.getInstance();
-                c.add(Calendar.DAY_OF_MONTH, 1);
+                //c.add(Calendar.DAY_OF_MONTH, 1);
+                c.add(Calendar.MINUTE, 2);
 
                 String jwtToken = Jwts.builder()
                         .claim("name", authenticationParams.username)
                         //.claim("authorities", TROLOLOL)
-                        .setSubject(authenticationParams.username)
+                        .subject(authenticationParams.username)
                         //.setId(UUID.randomUUID().toString())
                         //.setIssuedAt(Date.from(now))
-                        .setExpiration(c.getTime())
+                        .expiration(c.getTime())
+                        .signWith(Keys.hmacShaKeyFor("ruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfg".getBytes()), Jwts.SIG.HS512)
+                        .setHeaderParam("alg","HS512")
                         .compact();
                 var h = new HttpHeaders();
                         h.set(HttpHeaders.AUTHORIZATION, "Bearer "+jwtToken);

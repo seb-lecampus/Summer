@@ -35,6 +35,8 @@ public class appConfig {
     AuthenticationConfiguration authenticationConfiguration;
     @Autowired
     UserDetailsService userDetailsService;
+    @Autowired
+    JwtTokenAuthenticationFilter jwtFilter;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     //@Autowired
     //AuthenticationProvider authProvider;
@@ -64,8 +66,8 @@ public class appConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());                                                              // disable csrf security
         http.sessionManagement(lol -> lol.sessionCreationPolicy(SessionCreationPolicy.STATELESS));    // enable stateless
-        http.userDetailsService(userDetailsService)
-                .authenticationManager(authenticationConfiguration.getAuthenticationManager()); // TODO Useless ?
+        //http.userDetailsService(userDetailsService)
+        //        .authenticationManager(authenticationConfiguration.getAuthenticationManager()); // TODO Useless ?
         /*http.exceptionHandling(e -> e.accessDeniedHandler(new AccessDeniedHandler() {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
@@ -77,9 +79,9 @@ public class appConfig {
         http.authorizeHttpRequests(request ->
                 request.requestMatchers("api/public/**").permitAll()
                         .requestMatchers("jwt/**").permitAll()
-                        //.requestMatchers("/api/v1/admin/resource").hasRole("ADMIN") replaced with annotation in AuthorizationController   
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
-        http.addFilterBefore(new JwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -3,9 +3,11 @@ package com.example.Season.entity;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
@@ -21,6 +23,8 @@ public class User2 implements UserDetails {
     private Boolean iscredentialsExpired;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;
+
+    private String authorities;
 
     public User2() {
 
@@ -41,11 +45,12 @@ public class User2 implements UserDetails {
         iscredentialsExpired = false;
         isAccountExpired = false;
         isAccountLocked = false;
+        authorities = "ROLE_USER";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Arrays.stream(authorities.split(";")).map(SimpleGrantedAuthority::new).toList();
     }
 
     @Override

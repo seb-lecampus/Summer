@@ -30,6 +30,4 @@ public class JWTController {
     public User2 testouille(){
         return null;
     }
-
-
 }
