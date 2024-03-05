@@ -54,4 +54,5 @@ public class UserEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 }

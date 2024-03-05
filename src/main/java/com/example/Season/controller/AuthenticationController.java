@@ -1,5 +1,6 @@
 package com.example.Season.controller;
 
+import com.example.Season.repository.User2Repository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,6 +27,8 @@ import java.util.UUID;
 public class AuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    User2Repository userRepository;
 
     @PostMapping("api/public/login")
     public ResponseEntity<String> login(@RequestBody AuthenticationParams authenticationParams){
@@ -39,7 +42,7 @@ public class AuthenticationController {
             if(authenticationResponse.isAuthenticated()) {
                 var tokenExp = Calendar.getInstance();
                     //tokenExp.add(Calendar.DAY_OF_MONTH, 1);
-                    tokenExp.add(Calendar.MINUTE, 2);
+                    tokenExp.add(Calendar.SECOND, 1);
                 var refreshExp = Calendar.getInstance();
                     refreshExp.add(Calendar.WEEK_OF_MONTH, 1);
 
@@ -58,6 +61,9 @@ public class AuthenticationController {
                         .subject(authenticationParams.username)
                         .expiration(refreshExp.getTime())
                         .compact();
+
+                userRepository.save(
+                        userRepository.findByUserName(authenticationParams.username).setRefresh_token(jwtRefresh));
 
                 var h = new HttpHeaders();
                         h.add(HttpHeaders.AUTHORIZATION, "Bearer "+jwtToken);

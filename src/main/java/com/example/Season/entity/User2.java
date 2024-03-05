@@ -23,8 +23,11 @@ public class User2 implements UserDetails {
     private Boolean iscredentialsExpired;
     private Boolean isAccountLocked;
     private Boolean isAccountExpired;
-
     private String authorities;
+
+
+
+    private String refresh_token;
 
     public User2() {
 
@@ -46,6 +49,7 @@ public class User2 implements UserDetails {
         isAccountExpired = false;
         isAccountLocked = false;
         authorities = "ROLE_USER";
+        refresh_token = null;
     }
 
     @Override
@@ -81,5 +85,13 @@ public class User2 implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public String getRefresh_token() {
+        return refresh_token;
+    }
+    public User2 setRefresh_token(String refresh_token) {
+        this.refresh_token = refresh_token;
+        return this;
     }
 }

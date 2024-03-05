@@ -2,6 +2,7 @@ package com.example.Season;
 
 import com.example.Season.entity.User2;
 import com.example.Season.repository.User2Repository;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -39,30 +40,48 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
         var a = request.getCookies(); // TODO !! NotWork
         System.out.println("request.getCookies()="+a);
-        var cookies = Arrays.stream(request.getHeader(HttpHeaders.COOKIE).split(",")).map(e -> e.split("=")).collect(Collectors.toMap(e->e[0], e->e[1]));
+        var cookies = (request.getHeader(HttpHeaders.COOKIE) != null) ? Arrays.stream(request.getHeader(HttpHeaders.COOKIE).split(",")).map(e -> e.split("=")).collect(Collectors.toMap(e->e[0], e->e[1])) : null;
         System.out.println("request.getHeader()="+cookies);
 
-        String refresh_token = cookies.get("refresh_token");
+        String refresh_token = (cookies != null) ? cookies.get("refresh_token") : null;
         System.out.println("refresh_token="+refresh_token);
 
         if(authHeader != null) {
-            var reg = Pattern.compile("([Bb]earer) ?(.*)").matcher(authHeader);
-            System.out.println(reg.find());
-            System.out.println(reg.group(2));
+            try {
+                var reg = Pattern.compile("([Bb]earer) ?(.*)").matcher(authHeader);
+                System.out.println(reg.find());
+                System.out.println(reg.group(2));
 
-            var tk = Jwts.parser().verifyWith(Keys.hmacShaKeyFor("ruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfg".getBytes())).build().parseSignedClaims(reg.group(2)).getPayload();
-            System.out.println(tk);
-            SecurityContextHolder h = new SecurityContextHolder();
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
+                var tk = Jwts.parser().verifyWith(Keys.hmacShaKeyFor("ruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfgruhqsufgquigqiugiuhfg".getBytes())).build().parseSignedClaims(reg.group(2)).getPayload();
+                System.out.println(tk);
+                SecurityContextHolder h = new SecurityContextHolder();
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
 
-            var user = userRepo.findByUserName(tk.getSubject());
-            if (user != null) {
-                context.setAuthentication(new UsernamePasswordAuthenticationToken(
-                        user,
-                        null,
-                        user.getAuthorities()
-                        ));
-                SecurityContextHolder.setContext(context);
+                var user = userRepo.findByUserName(tk.getSubject());
+                if (user != null) {
+                    context.setAuthentication(new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            user.getAuthorities()
+                    ));
+                    SecurityContextHolder.setContext(context);
+                }
+            } catch (ExpiredJwtException e) {
+                if(refresh_token != null) {
+                    var tk = Jwts.parser().unsecured().build().parseUnsecuredClaims(refresh_token).getPayload();
+
+                    SecurityContextHolder h = new SecurityContextHolder();
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+                    var user = userRepo.findByUserName(tk.getSubject());
+                    if (user != null) {
+                        System.out.println("REGENERATE TOKEN");
+                    } else {
+                        System.err.println("INCONNU AU BATAILLON");
+                    }
+
+                    response.addHeader(HttpHeaders.AUTHORIZATION, "REGENERATED TOKEN");
+                }
             }
         }
         System.out.println("CUSTOM FILTER END");
