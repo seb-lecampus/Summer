@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
@@ -35,9 +36,16 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("CUSTOM FILTER START");
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         System.out.println(authHeader);
-        if(authHeader != null) {
-            ArrayList<String> authorization = new ArrayList<>(Arrays.asList(authHeader.split("#([Bb]earer) ?(.*)#")));
 
+        var a = request.getCookies(); // TODO !! NotWork
+        System.out.println("request.getCookies()="+a);
+        var cookies = Arrays.stream(request.getHeader(HttpHeaders.COOKIE).split(",")).map(e -> e.split("=")).collect(Collectors.toMap(e->e[0], e->e[1]));
+        System.out.println("request.getHeader()="+cookies);
+
+        String refresh_token = cookies.get("refresh_token");
+        System.out.println("refresh_token="+refresh_token);
+
+        if(authHeader != null) {
             var reg = Pattern.compile("([Bb]earer) ?(.*)").matcher(authHeader);
             System.out.println(reg.find());
             System.out.println(reg.group(2));
@@ -48,13 +56,14 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             SecurityContext context = SecurityContextHolder.createEmptyContext();
 
             var user = userRepo.findByUserName(tk.getSubject());
-
-            context.setAuthentication(new UsernamePasswordAuthenticationToken(
-                    user,
-                    null,
-                    user.getAuthorities()
-                    ));
-            SecurityContextHolder.setContext(context);
+            if (user != null) {
+                context.setAuthentication(new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                        ));
+                SecurityContextHolder.setContext(context);
+            }
         }
         System.out.println("CUSTOM FILTER END");
         filterChain.doFilter(request, response);

@@ -2,7 +2,8 @@ package com.example.Season.controller;
 
 import com.example.Season.entity.User2;
 import com.example.Season.repository.User2Repository;
-import com.example.Season.rest_param.UserParam2;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,9 @@ public class JWTController {
     @GetMapping("/test")
     public User2 testouille(){
         return null;
+    }
+
+    public record UserParam2 (@Pattern(regexp = "[a-z0-9A-Z]+") String login, @NotBlank String password) {
+
     }
 }
