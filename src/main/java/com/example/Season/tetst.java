@@ -10,26 +10,29 @@ import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLOutput;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.StreamSupport.stream;
 
 
 public class tetst {
-    public static void main(String[] args) throws InvalidPositionException {
-        SpringApplication.run(tetst.class, args);
-    }
+    public record player(String name){}
 
-    @RestController
-    class test{
-        @Autowired GamePlugin g;
+    public static void main(String[] args) {
+        ResponseEntity<player[]> response = new RestTemplate().getForEntity("http://172.22.114.56:9191/Players", player[].class);
 
-        @GetMapping("/")
-        public void t(){
-            g.getName(null);
-        }
+        player[] playerslist = response.getBody();
+
+        Arrays.stream(playerslist).forEach(e -> System.out.println(e.name()));
     }
 }
