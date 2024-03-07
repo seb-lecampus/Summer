@@ -2,9 +2,7 @@ package com.example.Season.controller;
 
 import com.example.Season.repository.User2Repository;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.Cookie;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +17,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
 
 @RestController
 public class AuthenticationController {
+    /*@Autowired
+    AuthenticationManager authenticationManager;*/
     @Autowired
-    AuthenticationManager authenticationManager;
+    AuthenticationConfiguration authenticationConfiguration;
     @Autowired
     User2Repository userRepository;
 
     @PostMapping("api/public/login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationParams authenticationParams){
+    public ResponseEntity<Object> login(@RequestBody AuthenticationParams authenticationParams){
         try {
             Authentication authenticationRequest =
                 UsernamePasswordAuthenticationToken.unauthenticated(authenticationParams.username(), authenticationParams.password());
 
             Authentication authenticationResponse =
-                    authenticationManager.authenticate(authenticationRequest);
+                    authenticationConfiguration.getAuthenticationManager().authenticate(authenticationRequest);
 
             if(authenticationResponse.isAuthenticated()) {
                 var tokenExp = Calendar.getInstance();
@@ -67,12 +64,11 @@ public class AuthenticationController {
 
                 var h = new HttpHeaders();
                         h.add(HttpHeaders.AUTHORIZATION, "Bearer "+jwtToken);
-                        h.add(HttpHeaders.SET_COOKIE, "refresh_token="+jwtRefresh);
+                        h.set(HttpHeaders.SET_COOKIE, "refresh_token="+jwtRefresh);
                         //h.add(HttpHeaders.COOKIE, new Cookie("COOKIE", jwtRefresh).toString());
                         //h.add(HttpHeaders.SET_COOKIE2, new Cookie("SET_COOKIE2", jwtRefresh).toString());
                 return ResponseEntity.ok()
-                        .headers(h)
-                        .body("");
+                        .headers(h).body(null);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());

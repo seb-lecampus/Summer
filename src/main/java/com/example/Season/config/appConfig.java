@@ -31,10 +31,10 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class appConfig {
-    @Autowired
-    AuthenticationConfiguration authenticationConfiguration;
-    @Autowired
-    UserDetailsService userDetailsService;
+    //@Autowired
+    //AuthenticationConfiguration authenticationConfiguration;
+    //@Autowired
+    // userDetailsService;
     @Autowired
     JwtTokenAuthenticationFilter jwtFilter;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -45,14 +45,14 @@ public class appConfig {
         return passwordEncoder;
     }
 
-    @Bean
+    /*@Bean
     public AuthenticationManager authenticationManager() {
         try {
             return authenticationConfiguration.getAuthenticationManager();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     /*@Bean
     public AuthenticationProvider authenticationProvider() {
@@ -80,15 +80,17 @@ public class appConfig {
                 request.requestMatchers("api/public/**").permitAll()
                         .requestMatchers("jwt/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors(a -> a.disable());
         return http.build();
     }
 
-    @Bean
+    /*@Bean
     WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
-    }
+    }*/
 
 }
